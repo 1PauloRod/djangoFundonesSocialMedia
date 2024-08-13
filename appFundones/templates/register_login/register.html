@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    <title>Cadastro</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="card-register">
+        <form class="form-register" method="POST">
+            <div class="img-logo">
+                <img src="{% static 'img/logo.png' %}">
+            </div>
+            {% csrf_token %}
+            <div class="row-1">
+                {{registerForm.name}}
+                {{registerForm.last_name}}
+            </div> 
+
+            <div class="row-2">
+                {{registerForm.identifier}}
+                <div>
+                    {% if registerForm.identifier.errors %}
+                        <span class="error">{{ registerForm.identifier.errors.as_text }}</span>
+                    {% endif %}
+                    </div>
+            </div> 
+            
+            <div class="row-3">
+                {{registerForm.password}}
+                {{registerForm.confirm_password}}
+                <div>
+                {% if registerForm.password.errors %}
+                    <span class="error">{{ registerForm.password.errors.as_text }}</span>
+                {% endif %}
+                </div>
+            </div> 
+
+            <div class="row-4">
+                {{registerForm.bday}}
+            </div> 
+
+            <div class="row-5">
+                {{registerForm.gender}}
+            </div>
+            
+            <button class="btn-register">Cadastrar</button>
+            <p>Já tem cadastro? Então faça o <a href="{% url 'login' %}">Login!</a></p>
+        </form>
+    </div>
+    <footer>
+        <p>&copy;2024 - Created by Paulo Rodrigues</p>
+    </footer>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'script/mask_bday.js' %}"></script>
+{% endblock %}

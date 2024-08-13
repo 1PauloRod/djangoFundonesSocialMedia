@@ -1,0 +1,107 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.login-card{
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-card img{
+    width: 300px;
+}
+
+.middle-card{
+    position: relative;
+    border: 1px solid black;
+    width: 600px;
+    height: 400px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.left-side{
+    border-right: 1px solid black;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background: #497FF3;
+}
+
+.right-side{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.right-side h1{
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.form-login{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-login input{
+    margin-bottom: 15px;
+    border-bottom: 1px solid black;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    width: 100%;
+}
+
+.form-login input:focus{
+    outline: none;
+}
+
+.btn-login{
+    width: 100px;
+    height: 25px;
+    border-radius: 15px;
+    border: 2px solid black;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.btn-login:hover{
+    cursor: pointer;
+    background: #497FF3;
+    color: #BBECD1;
+}
+
+.form-login p a{
+    font-weight: 700;
+    color: #497FF3;
+}
+
+.form-login p a:hover{
+    font-weight: 700;
+    color: #BBECD1;
+}
+
+footer{
+    position: absolute;
+    top: 95%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error{
+    position: absolute;
+    top: 80px;
+    color: red;
+    font-weight: 700;
+}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    <title>Home</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="main-page">
+        <nav class="nav-bar">
+            <ul>
+                <li class="img-perfil">
+                    <img src="{% static 'img/noProfile.jpg' %}">
+                </li>
+                <li class="search-bar">
+                    <input type="text" name="search-bar" placeholder="Pesquisar">
+
+                </li>
+                <li class="img-logout">
+                    <a href="{% url 'logout' %}"><img src="{% static 'img/logout.png' %}"></a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-feed">
+            <nav class="nav-you-frinds-posts">
+                <ul>
+                    <li class="you-post">Você</li>
+                    <li class="friends-post">Amigos</li>
+                </ul>
+            </nav>
+
+            <form action="{% url 'home' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="post-area">
+                    <div class="post-input-area">
+                        <textarea id="auto-focus-textarea" name="text-post" placeholder="Escreva um texto"></textarea>
+                        <div class="option-type-post-and-button">
+                            <ul>
+                                <li class="img-midia">
+                                    <input id="image-input" type="file" name="image-post">
+                                    <img id="upload-icon" src="{% static 'img/midia.png' %}">
+                                </li>
+                                <li class="img-emoji">
+                                    <img src="{% static 'img/emoji.png' %}">
+                                </li>
+                            </ul>
+                            <p id="file-name"></p>
+                            <button id="btn-post" class="btn-post">Postar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="posts">
+                {% for post in posts %}
+                    <div class="one-post">
+                        <div class="one-post-profile-info">
+                            <div class="img-perfil">
+                                <img src="{% static 'img/noProfile.jpg' %}">
+                            </div>
+                            <h3>{{ user.name }} {{ user.last_name }}</h3>
+                            <p>{{ post.created_at }}</p>
+                        </div>
+                        <div class="one-post-content">
+                            <a>{{ post }}</a>
+                            {% if post.image %}
+                                <img src="{{ post.image.url }}" alt="Imagem do post">
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+                    
+            </div>
+
+        </div>
+
+    </div>
+    
+{% endblock %}
+
+
+{% block script %}
+    <script src="{% static 'script/disabled_button_post.js' %}"></script>
+    <script src="{% static 'script/textarea_focus.js' %}"></script>
+    <script src="{% static 'script/hidden_button_image.js' %}"></script>
+    <script src="{% static 'script/teste.js' %}"></script>
+{% endblock %}
