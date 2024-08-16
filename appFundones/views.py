@@ -4,7 +4,10 @@ from .forms import RegisterForm, LoginForm
 from django.contrib.auth import login, get_user, logout
 from django.contrib.auth.decorators import login_required
 from .models import Post
-# Create your views here.
+from django.utils import timezone
+from datetime import timedelta
+
+
 def register_view(request):
     if request.method == 'POST':
         registerForm = RegisterForm(request.POST)
@@ -50,8 +53,19 @@ def home_view(request):
         
     all_posts = Post.objects.filter(author=user).order_by('-created_at')
     
-    print(all_posts)
-    context = {"posts": all_posts, "user": user}
+    post_with_time_difference = []
+    date_now = timezone.now()
+    for post in all_posts:
+        time_difference = date_now - post.created_at
+        post_with_time_difference.append({'post': post, 
+                                     'time_difference': time_difference}) 
+        
+    
+    print(post_with_time_difference)
+    context = {"posts": post_with_time_difference, 
+               "user": user
+            }
+    
     return render(request, "pages/home.html", context)
         
         

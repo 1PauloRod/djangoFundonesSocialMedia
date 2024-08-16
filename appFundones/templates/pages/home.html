@@ -64,12 +64,20 @@
                                 <img src="{% static 'img/noProfile.jpg' %}">
                             </div>
                             <h3>{{ user.name }} {{ user.last_name }}</h3>
-                            <p>{{ post.created_at }}</p>
+                            {% if post.time_difference.days > 0 %}
+                            {{ post.time_difference.days }} dias
+                        {% elif post.time_difference.seconds > 3600 %}
+                            {{ post.time_difference.seconds|divisibleby:3600 }} horas
+                        {% elif post.time_difference.seconds > 60 %}
+                            {{ post.time_difference.seconds|divisibleby:60 }} minutos
+                        {% else %}
+                poucos segundos
+            {% endif %}
                         </div>
                         <div class="one-post-content">
-                            <a>{{ post }}</a>
-                            {% if post.image %}
-                                <img src="{{ post.image.url }}" alt="Imagem do post">
+                            <a>{{ post.post }}</a>
+                            {% if post.post.image %}
+                                <img src="{{ post.post.image.url }}" alt="Imagem do post">
                             {% endif %}
                         </div>
                     </div>
