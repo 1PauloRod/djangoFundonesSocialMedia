@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_filter %}
 {% load static %}
 
 {% block title %}
@@ -13,11 +14,17 @@
     <div class="main-page">
         <nav class="nav-bar">
             <ul>
-                <li class="img-perfil">
-                    <img src="{% static 'img/noProfile.jpg' %}">
+                <li class="img-profile">
+                    {% if user.profile_image %}
+                        <a href="{% url 'profile' %}"><img id="profile-image" src={{ user.profile_image.url }} alt="imagem de perfil"></a>
+                        
+                    {% else %}
+                        <a href="{% url 'profile' %}"><img src="{% static 'img/noProfile.jpg' %}"></a>
+                    {% endif %}
+                    
                 </li>
                 <li class="search-bar">
-                    <input type="text" name="search-bar" placeholder="Pesquisar">
+                    <input id="search-bar" type="text" name="search-bar" placeholder="Pesquisar">
 
                 </li>
                 <li class="img-logout">
@@ -60,16 +67,30 @@
                 {% for post in posts %}
                     <div class="one-post">
                         <div class="one-post-profile-info">
-                            <div class="img-perfil">
-                                <img src="{% static 'img/noProfile.jpg' %}">
+                            <div class="img-profile">
+                                {% if user.profile_image %}
+                                    <a href="{% url 'profile' %}"><img id="profile-image" src={{ user.profile_image.url }} alt="imagem de perfil"></a>
+                        
+                                {% else %}
+                                    <a href="{% url 'profile' %}"><img src="{% static 'img/noProfile.jpg' %}"></a>
+                                {% endif %}
                             </div>
                             <h3>{{ user.name }} {{ user.last_name }}</h3>
                             {% if post.time_difference.days > 0 %}
+                            {% if post.time_difference.days == 1 %}
+                                {{ post.time_difference.days }} dia
+                            {% else %}
                             {{ post.time_difference.days }} dias
+                            {% endif %}
                         {% elif post.time_difference.seconds > 3600 %}
-                            {{ post.time_difference.seconds|divisibleby:3600 }} horas
+                            {{ post.time_difference.seconds|divide_by_3600 }} horas
                         {% elif post.time_difference.seconds > 60 %}
-                            {{ post.time_difference.seconds|divisibleby:60 }} minutos
+                        {% if post.time_difference.seconds|divide_by_60 == 1 %}
+                            {{ post.time_difference.seconds|divide_by_60  }} minuto
+                        {% else %}
+                        {{ post.time_difference.seconds|divide_by_60  }} minutos
+                        {% endif %}
+
                         {% else %}
                 poucos segundos
             {% endif %}

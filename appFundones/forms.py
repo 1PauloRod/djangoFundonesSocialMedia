@@ -125,14 +125,15 @@ class LoginForm(forms.Form):
         cleaned_data = super().clean()
         identifier = self.cleaned_data.get('identifier')
         password = self.cleaned_data.get('password')
-        
+        print("identifier: ", identifier)
         if identifier and password:
-            if '@' in identifier:
+            user = authenticate(email_or_phone=identifier, password=password)
+            '''if '@' in identifier:
                 user = authenticate(email=identifier, password=password)
                 
             else:
                 user = authenticate(phone_number=identifier, password=password)
-            
+            '''
             if not user:
                 raise forms.ValidationError("usuário ou senha incorretos.")
             cleaned_data['user'] = user

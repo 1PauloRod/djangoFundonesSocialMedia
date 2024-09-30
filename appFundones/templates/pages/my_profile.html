@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load custom_filter %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-page">
+    <nav class="nav-bar">
+        <ul>
+            <li class="search-bar">
+                <form class="search-bar" method="GET" action="{% url 'search_profile' %}">
+                    <input id="search-bar" type="text" name="query-profile" placeholder="Pesquisar">
+                    <button type="submit">procurar</submit>
+                </form>
+            </li>
+            <button id="btn-notification" class="btn-notification">Notificação</button>
+            <li class="img-logout">
+                <a href="{% url 'logout' %}"><img src="{% static 'img/logout.png' %}"></a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="modal-notifications">
+        <span class="close-notification">&times;</span>
+        <div class="notifications">
+            {% if notifications %}
+                {% for notification in notifications %}   
+                    <a> <strong>{{ notification.from_user.name }} {{ notification.from_user.last_name }} </strong> enviou solicitação de amizade</a>
+                    <a href="{% url 'add_friend' notification.from_user.id %}">aceitar</a>
+                    <a href="{% url 'decline_friend_request' notification.from_user.id %}">recusar</a>
+                {% endfor %}
+            {% else %}
+                    <a>Nenhuma solicitação de amizade</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <form class="form-profile-bio" method="POST" action = "{% url 'profile' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="profile-bio">
+            <div class="photo-profile">
+                {% if user.profile_image %}
+                    <img id="profile-image" src={{ user.profile_image.url }} alt="imagem de perfil">
+                {% else %}
+                    <img id="profile-image" src="{% static 'img/noProfile.jpg' %}">
+                {% endif %}
+                <input id="image-profile-input" type="file" name="image-profile">
+            </div>
+
+            <div class="bio-info">
+                <h2 class="bio-name">{{user.name}} {{user.last_name}}</h2>
+                {% if user.description_bio %}
+                    <p id="bio-description-button" class="bio-description">{{user.description_bio}}</p>
+                {% else %}
+                    <p id="bio-description-button" class="bio-description">Adicione uma Bio</p>
+                {% endif %}
+                <p class="joined-date-bio">Ingressou em {{user.created_at|date:"F"}} de {{user.created_at|date:"Y"}}</p>
+                <p class="friends-number-bio">{{ user.friend_count }} Amigos</p>
+            </div>
+        </div>
+        <button id="btn-change-profile-photo">Trocar</button>
+    
+    </form>
+
+    <div id="bio-modal" class="modal">
+        <span class="close">&times;</span>
+        <div class="modal-content">
+            <form class="form-description-bio" action="{% url 'edit_description' %}" method="POST">
+                {% csrf_token %}
+                <textarea name="description-bio" placeholder="Adicione uma descrição"></textarea>
+                <button class="btn-save-description" type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="posts">
+        {% for post in posts %}
+            <div class="one-post">
+                <div class="one-post-profile-info">
+                    <div class="img-profile-post">
+                        {% if user.profile_image %}
+                        <a href="{% url 'profile' %}"><img id="profile-image" src={{ user.profile_image.url }} alt="imagem de perfil"></a>
+                        
+                    {% else %}
+                        <a href="{% url 'profile' %}"><img src="{% static 'img/noProfile.jpg' %}"></a>
+                    {% endif %}
+                    </div>
+                    <h3>{{ user.name }} {{ user.last_name }}</h3>
+                    {% if post.time_difference.days > 0 %}
+                    {% if post.time_difference.days == 1 %}
+                        {{ post.time_difference.days }} dia
+                    {% else %}
+                    {{ post.time_difference.days }} dias
+                    {% endif %}
+                {% elif post.time_difference.seconds > 3600 %}
+                    {{ post.time_difference.seconds|divide_by_3600 }} horas
+                {% elif post.time_difference.seconds > 60 %}
+                {% if post.time_difference.seconds|divide_by_60 == 1 %}
+                    {{ post.time_difference.seconds|divide_by_60  }} minuto
+                {% else %}
+                {{ post.time_difference.seconds|divide_by_60  }} minutos
+                {% endif %}
+
+                {% else %}
+        poucos segundos
+    {% endif %}
+                </div>
+                <div class="one-post-content">
+                    <a>{{ post.post }}</a>
+                    {% if post.post.image %}
+                        <img src="{{ post.post.image.url }}" alt="Imagem do post">
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+            
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'script/change_profile_photo.js'%}"></script>
+    <script src="{% static 'script/change_bio_description.js'%}"></script>
+    <script src="{% static 'script/notification_modal.js'%}"></script>
+{% endblock %}

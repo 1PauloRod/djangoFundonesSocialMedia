@@ -1,5 +1,5 @@
 const textarea = document.getElementById("auto-focus-textarea");
-
+const search_bar = document.getElementById("search-bar");
 
 
  // Adiciona um evento de foco ao textarea
@@ -12,8 +12,17 @@ const textarea = document.getElementById("auto-focus-textarea");
 
 // Função para garantir que o textarea mantenha o foco
 function keepFocus(event) {
-    if (event.target !== textarea) {
+
+    if (event.target === search_bar){
+        search_bar.focus();
+    }else{
         textarea.focus();
     }
+
+
+
+    /*if (event.target !== textarea) {
+        textarea.focus();
+    }*/
 }
 

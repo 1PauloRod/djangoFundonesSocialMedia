@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load custom_filter %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-page">
+    <nav class="nav-bar">
+        <ul>
+            <li class="search-bar">
+                <form class="search-bar" method="GET" action="{% url 'search_profile' %}">
+                    <input id="search-bar" type="text" name="query-profile" placeholder="Pesquisar">
+                    <button type="submit">procurar</submit>
+                </form>
+            </li>
+            <li class="img-logout">
+                <a href="{% url 'logout' %}"><img src="{% static 'img/logout.png' %}"></a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="form-profile-bio"> 
+        <div class="profile-bio">
+            <div class="photo-profile">
+                {% if user.profile_image %}
+                    <img id="profile-image" src={{ user.profile_image.url }} alt="imagem de perfil">
+                {% else %}
+                    <img id="profile-image" src="{% static 'img/noProfile.jpg' %}">
+                {% endif %}
+                {% if friend_request %}
+                    <a href="{% url 'cancel_friend_request' user.id %}">Solicitação enviada</a>
+                {% else %}
+                    
+                    {% if request.user in user.friends.all %}
+                
+                        <a href="{% url 'remove_friend' user.id %}">Amigos</a>
+                    {% else %}
+                        <a href="{% url 'send_friend_request' user.id %}">Add amigo</a>
+                    {% endif %}        
+                {% endif %}
+
+            </div>
+
+            <div class="bio-info">
+                <h2 class="bio-name">{{user.name}} {{user.last_name}}</h2>
+                {% if user.description_bio %}
+                    <p id="bio-description-button" class="bio-description">{{user.description_bio}}</p>
+                {% else %}
+                    <p id="bio-description-button" class="bio-description">Adicione uma Bio</p>
+                {% endif %}
+                <p class="joined-date-bio">Ingressou em {{user.created_at|date:"F"}} de {{user.created_at|date:"Y"}}</p>
+                <p class="friends-number-bio">{{ user.friend_count }} Amigos</p>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+    <div class="posts">
+        {% for post in posts %}
+            <div class="one-post">
+                <div class="one-post-profile-info">
+                    <div class="img-profile-post">
+                        {% if user.profile_image %}
+                        <a href="{% url 'profile' %}"><img id="profile-image" src={{ user.profile_image.url }} alt="imagem de perfil"></a>
+                        
+                        {% else %}
+                            <a href="{% url 'profile' %}"><img src="{% static 'img/noProfile.jpg' %}"></a>
+                        {% endif %}
+                    </div>
+                    
+                    <h3>{{ user.name }} {{ user.last_name }}</h3>
+                    {% if post.time_difference.days > 0 %}
+                    {% if post.time_difference.days == 1 %}
+                        {{ post.time_difference.days }} dia
+                    {% else %}
+                    {{ post.time_difference.days }} dias
+                    {% endif %}
+                    {% elif post.time_difference.seconds > 3600 %}
+                        {{ post.time_difference.seconds|divide_by_3600 }} horas
+                    {% elif post.time_difference.seconds > 60 %}
+                    {% if post.time_difference.seconds|divide_by_60 == 1 %}
+                        {{ post.time_difference.seconds|divide_by_60  }} minuto
+                    {% else %}
+                    {{ post.time_difference.seconds|divide_by_60  }} minutos
+                    {% endif %}
+
+                    {% else %}
+                    poucos segundos
+                    {% endif %}
+                </div>
+            
+                <div class="one-post-content">
+                    <a>{{ post.post }}</a>
+                    {% if post.post.image %}
+                        <img src="{{ post.post.image.url }}" alt="Imagem do post">
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+            
+    </div> 
+
+    
+</div>
+
+{% endblock %}

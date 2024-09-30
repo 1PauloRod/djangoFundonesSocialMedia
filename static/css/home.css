@@ -10,7 +10,6 @@
     width: 70%;
     max-width: 700px;
     min-width: 300px;
-    height: 70vh;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -125,7 +124,7 @@
     width: 20px;
 }
 
-.img-perfil img{
+.img-profile img{
     width: 30px;
     border-radius: 25px;
     border: 2px solid #497FF3;
@@ -156,7 +155,7 @@
 
 .posts{
     overflow-y: auto;
-    height: 80vh;
+    height: 71.5vmax;
     border-left: 1px solid #497FF3;
     border-right: 1px solid #497FF3;
     width: 100%;

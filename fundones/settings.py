@@ -75,7 +75,7 @@ DATABASES = {
     }
 }
 
-AUTH__USER_MODEL = "appFundones.CustomUser"
+AUTH_USER_MODEL = "appFundones.CustomUser"
 
 AUTHENTICATION_BACKENDS = [
     "appFundones.backends.EmailOrPhoneBackend"
@@ -103,7 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'UTC'
 
